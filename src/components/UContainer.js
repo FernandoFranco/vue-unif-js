@@ -1,7 +1,6 @@
 import UnifJS from 'unif-js';
 
 export default {
-  functional: true,
   props: {
     tag: {
       type: String,
@@ -18,7 +17,7 @@ export default {
   },
   mounted() {
     this.unifjs = new UnifJS(this.$el, {
-      sectionSelector: '.u-section',
+      sectionSelector: '.u-session',
       disableHash: this.disableHash,
       disableWheel: this.disableWheel,
       disableTouch: this.disableTouch,
@@ -32,9 +31,9 @@ export default {
   beforeDestroy() {
     this.unifjs.stop();
   },
-  render(createElement, { props, data, children }) {
-    return createElement(props.tag, Object.assign({}, data, {
-      staticClass: `${data.staticClass || ''} u-container`.trim(),
-    }), children);
+  render(createElement) {
+    return createElement(this.tag, {
+      staticClass: 'u-container',
+    }, this.$slots.default);
   },
 };
