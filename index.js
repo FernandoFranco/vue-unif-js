@@ -1,5 +1,6 @@
 import UContainer from './src/components/UContainer';
 import USession from './src/components/USession';
+
 import './src/style.css';
 
 const FULLPAGE_STYLE = `
@@ -13,7 +14,7 @@ html, body {
 `;
 
 export default {
-  install(Vue, { fullPage }) {
+  install(Vue, { fullPage } = {}) {
     Vue.component('u-container', UContainer);
     Vue.component('u-session', USession);
 

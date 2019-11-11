@@ -1,4 +1,4 @@
-import ClassMerge from '../utils/class-merge';
+import classMerge from '../utils/class-merge';
 
 export default {
   functional: true,
@@ -12,7 +12,7 @@ export default {
   render(createElement, { props, data, children }) {
     return createElement(props.tag, Object.assign({}, data, {
       staticClass: `${data.staticClass || ''} u-session`.trim(),
-      class: ClassMerge(data.class, {
+      class: classMerge(data.class, {
         'u-session--fill-height': !!props.fillHeight,
       }),
     }), children);

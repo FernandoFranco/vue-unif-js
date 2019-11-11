@@ -15,6 +15,25 @@ export default {
     disableSpaceBarKey: Boolean,
     disableHomeEndKeys: Boolean,
   },
+  data() {
+    return {
+      unifjs: null,
+    };
+  },
+  methods: {
+    start() {
+      this.unifjs.start();
+    },
+    stop() {
+      this.unifjs.stop();
+    },
+    reload() {
+      this.stop();
+      this.$nextTick(() => {
+        this.start();
+      });
+    },
+  },
   mounted() {
     this.unifjs = new UnifJS(this.$el, {
       sectionSelector: '.u-session',
@@ -35,5 +54,31 @@ export default {
     return createElement(this.tag, {
       staticClass: 'u-container',
     }, this.$slots.default);
+  },
+  watch: {
+    disableHash() {
+      this.reload();
+    },
+    disableWheel() {
+      this.reload();
+    },
+    disableTouch() {
+      this.reload();
+    },
+    disableKeys() {
+      this.reload();
+    },
+    disableArrowKeys() {
+      this.reload();
+    },
+    disablePageKeys() {
+      this.reload();
+    },
+    disableSpaceBarKey() {
+      this.reload();
+    },
+    disableHomeEndKeys() {
+      this.reload();
+    },
   },
 };
