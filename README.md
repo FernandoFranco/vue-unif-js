@@ -36,10 +36,10 @@ This plugin contains 2 components, u-container and u-session.
 
 The component u-container is root element to use unif-js.  
 
-Change your App.vue like this:
+Your Component.vue:
 ```html
 <template>
-  <u-container id="app">
+  <u-container router>
     <view-first-session />
     <view-second-session />
   </u-container>
@@ -50,7 +50,6 @@ import ViewFirstSession from './views/FirstSession.vue';
 import ViewSecondSession from './views/SecondSession.vue';
 
 export default {
-  name: 'app',
   components: {
     ViewFirstSession,
     ViewSecondSession,
@@ -59,26 +58,60 @@ export default {
 </script>
 ```
 
+### Using Vue Router
+
+If you get controll session by Vue Router, set the route like this:
+
+```javascript
+const routes = [
+  // Any another routes before
+  {
+    path: '/login',
+    component: Components,
+  },
+  // Route with sessions
+  {
+    path: '/',
+    component: Home,
+    children: [{ path: ':session', name: 'unifjs' }], // Important name unifjs
+  },
+  // Redirect
+  {
+    path: '*',
+    redirect: '/',
+  },
+];
+```
+
 ### Props
 
-| Prop                  | Type    | Default | Description                                 |
-| --------------------- | ------- | ------- | ------------------------------------------- |
-| tag                   | String  | 'div'   | The tag of content                          |
-| disable-hash          | Boolean | false   | Disable hash navigation                     |
-| disable-wheel         | Boolean | false   | Disable capture wheel events                |
-| disable-touch         | Boolean | false   | Disable capture touch events                |
-| disable-keys          | Boolean | false   | Disable capture any key events              |
-| disable-arrow-keys    | Boolean | false   | Disable arrow up and arrow down keys events |
-| disable-page-keys     | Boolean | false   | Disable page up and page down keys events   |
-| disable-space-bar-key | Boolean | false   | Disable space bar key event                 |
-| disable-home-end-keys | Boolean | false   | Disable home and end keys events            |
+| Prop                  | Type    | Default   | Description                                 |
+| --------------------- | ------- | --------- | ------------------------------------------- |
+| value                 | String  | undefined | The current session identifier              |
+| router                | Boolean | false     | Use the Vue Router to controll sessions     |
+| tag                   | String  | 'div'     | The tag of content                          |
+| disable-hash          | Boolean | false     | Disable hash navigation                     |
+| disable-wheel         | Boolean | false     | Disable capture wheel events                |
+| disable-touch         | Boolean | false     | Disable capture touch events                |
+| disable-keys          | Boolean | false     | Disable capture any key events              |
+| disable-arrow-keys    | Boolean | false     | Disable arrow up and arrow down keys events |
+| disable-page-keys     | Boolean | false     | Disable page up and page down keys events   |
+| disable-space-bar-key | Boolean | false     | Disable space bar key event                 |
+| disable-home-end-keys | Boolean | false     | Disable home and end keys events            |
+
+### Events
+
+| Event  | Value                                | Description        |
+| ------ | ------------------------------------ | ------------------ |
+| input  | String                               | Session Identifier |
+| change | Object { from: String , to: String } | Changed session    |
 
 ## USession
 
 The component u-session is a session of content in page.  
 
 The session is a component like this:
-```javascript
+```html
 // ./views/FirstSession.vue
 <template functional>
   <u-session id="about" fill-height>

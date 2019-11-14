@@ -2,6 +2,8 @@ import UnifJS from 'unif-js';
 
 export default {
   props: {
+    value: String,
+    router: Boolean,
     tag: {
       type: String,
       default: 'div',
@@ -20,6 +22,17 @@ export default {
       unifjs: null,
     };
   },
+  computed: {
+    session: {
+      get() {
+        return this.$route.params.session;
+      },
+      set(value) {
+        if (this.session === value) return;
+        this.$router.push({ name: 'unifjs', params: { session: value } });
+      },
+    },
+  },
   methods: {
     start() {
       this.unifjs.start();
@@ -33,11 +46,20 @@ export default {
         this.start();
       });
     },
+    updateSession(session) {
+      this.unifjs.setSession(session);
+    },
+    onScroll({ from, to }) {
+      this.session = to;
+
+      this.$emit('input', to);
+      this.$emit('change', { from, to });
+    },
   },
   mounted() {
     this.unifjs = new UnifJS(this.$el, {
       sectionSelector: '.u-session',
-      disableHash: this.disableHash,
+      disableHash: this.disableHash|| this.router,
       disableWheel: this.disableWheel,
       disableTouch: this.disableTouch,
       disableKeys: this.disableKeys,
@@ -45,7 +67,12 @@ export default {
       disablePageKeys: this.disablePageKeys,
       disableSpaceBarKey: this.disableSpaceBarKey,
       disableHomeEndKeys: this.disableHomeEndKeys,
+      onScroll: this.onScroll,
     });
+
+    setTimeout(() => {
+      this.updateSession((this.router ? this.session : this.value) || 0);
+    }, 300);
   },
   beforeDestroy() {
     this.unifjs.stop();
@@ -56,6 +83,10 @@ export default {
     }, this.$slots.default);
   },
   watch: {
+    value(value) {
+      if (this.session !== this.value) this.session = value;
+      this.updateSession(value);
+    },
     disableHash() {
       this.reload();
     },
@@ -79,6 +110,9 @@ export default {
     },
     disableHomeEndKeys() {
       this.reload();
+    },
+    $route({ name, params } = {}) {
+      if (name === 'unifjs') this.updateSession(this.session || 0);
     },
   },
 };
