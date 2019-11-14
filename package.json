@@ -1,6 +1,6 @@
 {
   "name": "vue-unif-js",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Vue components to use unif-js",
   "main": "index.js",
   "repository": "https://github.com/FernandoFranco/vue-unif-js.git",

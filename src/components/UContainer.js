@@ -58,7 +58,7 @@ export default {
   },
   mounted() {
     this.unifjs = new UnifJS(this.$el, {
-      sectionSelector: '.u-session',
+      sessionSelector: '.u-session',
       disableHash: this.disableHash|| this.router,
       disableWheel: this.disableWheel,
       disableTouch: this.disableTouch,
